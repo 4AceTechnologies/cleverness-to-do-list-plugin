@@ -14,9 +14,7 @@ Integrates a customizable, multi-featured to-do list.
 
 This plugin provides users with a to-do list feature.
 
-You can configure the plugin to have private to-do lists for each user, to have all users share a to-do list, or to have a master list with individual completion of items. The shared to-do list has a variety of settings
-available. You can assign to-do items to a specific user (includes a setting to email a new to-do item to the assigned user) and optionally have those items only viewable by that user. You can also assign different
-permission levels using capabilities. There are also settings to show deadline and progress fields. Category support is included as well as front-end administration.
+You can configure the plugin to have private to-do lists for each user, to have all users share a to-do list, or to have a master list with individual completion of items. The shared to-do list has a variety of settings available. You can assign to-do items to a specific user (includes a setting to email a new to-do item to the assigned user) and optionally have those items only viewable by that user. You can also assign different permission levels using capabilities. There are also settings to show deadline and progress fields. Category support is included as well as front-end administration.
 
 A new menu item is added to the backend to manage your list and the to-do list is also listed on a dashboard widget.
 

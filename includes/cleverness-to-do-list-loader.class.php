@@ -31,6 +31,7 @@ class CTDL_Loader {
 
 		global $ClevernessToDoList, $CTDL_Frontend_Checklist, $CTDL_Frontend_Admin;
         $ClevernessToDoList = new ClevernessToDoList();
+
 		if ( is_admin() ) {
 			new CTDL_Settings();
 			new CTDL_Dashboard_Widget();
@@ -119,6 +120,7 @@ class CTDL_Loader {
 	private static function include_files() {
 		include_once CTDL_PLUGIN_DIR.'includes/cleverness-to-do-list-library.class.php';
 		include_once CTDL_PLUGIN_DIR.'includes/cleverness-to-do-list.class.php';
+		include_once CTDL_PLUGIN_DIR.'includes/cleverness-to-do-list-table.class.php';
 		if ( self::$settings['categories'] == 1 ) include_once CTDL_PLUGIN_DIR.'includes/cleverness-to-do-list-categories.class.php';
 		if ( is_admin() ) {
 			include_once CTDL_PLUGIN_DIR.'includes/cleverness-to-do-list-settings.class.php';
@@ -161,6 +163,24 @@ class CTDL_Loader {
 			add_action( "load-$cleverness_todo_cat_page", 'CTDL_Help::cleverness_todo_help_tab' );
 		}
 		add_action( "load-$cleverness_todo_page", 'CTDL_Help::cleverness_todo_help_tab' );
+		add_action( "load-$cleverness_todo_page", __CLASS__.'::add_screen_options' );
+	}
+
+	/**
+	 * Add Screen Options
+	 * @static
+	 * @since 3.1
+	 */
+	public static function add_screen_options() {
+		global $ClevernessToDoListTable;
+		$option = 'per_page';
+		$args = array(
+			'label' => 'To-Do Items',
+			'default' => 30,
+			'option' => 'todos_per_page'
+		);
+		add_screen_option( $option, $args );
+		$ClevernessToDoListTable = new ClevernessToDoListTable();
 	}
 
 	/**

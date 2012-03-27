@@ -26,6 +26,21 @@ class ClevernessToDoList {
 	 * Display a to-do list
 	 */
 	public function display() {
+
+
+		global $ClevernessToDoListTable;
+		echo '</pre><div class="wrap"><h2>My List Table Test</h2>';
+		$ClevernessToDoListTable->prepare_items();
+		?>
+  <form method="post">
+	  <input type="hidden" name="page" value="ttest_list_table">
+    <?php
+    $ClevernessToDoListTable->search_box( 'search', 'search_id' );
+
+  $ClevernessToDoListTable->display();
+  echo '</form></div>';
+
+
 		list( $priorities, $user, $url, $action ) = CTDL_Lib::set_variables();
 
 		if ( is_admin() ) $this->list .= '<div class="wrap"><div class="icon32"><img src="'.CTDL_PLUGIN_URL.'/images/cleverness-todo-icon.png" alt="" /></div> <h2>'.__('To-Do List', 'cleverness-to-do-list').'</h2>';
