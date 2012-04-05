@@ -27,19 +27,7 @@ class ClevernessToDoList {
 	 */
 	public function display() {
 
-
 		global $ClevernessToDoListTable;
-		echo '</pre><div class="wrap"><h2>My List Table Test</h2>';
-		$ClevernessToDoListTable->prepare_items();
-		?>
-  <form method="post">
-	  <input type="hidden" name="page" value="ttest_list_table">
-    <?php
-    $ClevernessToDoListTable->search_box( 'search', 'search_id' );
-
-  $ClevernessToDoListTable->display();
-  echo '</form></div>';
-
 
 		list( $priorities, $user, $url, $action ) = CTDL_Lib::set_variables();
 
@@ -58,12 +46,26 @@ class ClevernessToDoList {
 		}
 		if ( is_admin() ) $this->list .= '</h3>';
 
-		$this->list .= '<table id="todo-list" class="todo-table widefat">';
-		$this->show_table_headings();
+		if ( is_admin() ) {
+			$this->loop_through_todos( $user, $priorities, $url );
+			$ClevernessToDoListTable->prepare_items();
+			?>
+            <form method="post">
+	            <input type="hidden" name="page" value="ttest_list_table">
+                <?php
+                $ClevernessToDoListTable->search_box( 'search', 'search_id' );
 
-		$this->loop_through_todos( $user, $priorities, $url );
+		        $ClevernessToDoListTable->display();
+            echo '</form>';
 
-		$this->list .= '</table>';
+		} else {
+			$this->list .= '<table id="todo-list" class="todo-table widefat">';
+			$this->show_table_headings();
+
+			$this->loop_through_todos( $user, $priorities, $url );
+
+			$this->list .= '</table>';
+		}
 
 		/* Show completed items in admin */
 		if ( is_admin() ) {
@@ -99,6 +101,8 @@ class ClevernessToDoList {
 	 * @param int $cat_id
 	 */
 	protected function loop_through_todos( $user, $priorities, $url, $completed = 0, $cat_id = 0 ) {
+		global $ClevernessToDoListTable;
+
 		// if categories are enabled and sort order is set to cat id and we're not getting todos for a specific category
 		if ( CTDL_Loader::$settings['categories'] == '1' && CTDL_Loader::$settings['sort_order'] == 'cat_id' && $cat_id == 0 ) {
 
@@ -140,7 +144,11 @@ class ClevernessToDoList {
 			$todo_items = CTDL_Lib::get_todos( $user, -1, $completed );
 
 			if ( $todo_items->have_posts() ) {
-				$this->show_todo_list_items( $todo_items, $priorities, $url, $completed );
+				if ( is_admin() ) {
+					$ClevernessToDoListTable->set_todo_data( $todo_items, $priorities, $url, $completed );
+				} else {
+					$this->show_todo_list_items( $todo_items, $priorities, $url, $completed );
+				}
 			} else {
 				if ( $completed == 0 ) {
 					$this->list .= '<tr><td>'.__( 'No items to do.', 'cleverness-to-do-list' ).'</td></tr>';

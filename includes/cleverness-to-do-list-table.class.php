@@ -20,20 +20,7 @@ if( !class_exists( 'WP_List_Table' ) ) {
 
 class ClevernessToDoListTable extends WP_List_Table {
 
-	var $example_data = array(
-		array( 'ID' => 1,'item' => 'Quarter Share', 'author' => 'Nathan Lowell',
-		       'isbn' => '978-0982514542' ),
-		array( 'ID' => 2, 'item' => '7th Son: Descent','author' => 'J. C. Hutchins',
-		       'isbn' => '0312384378' ),
-		array( 'ID' => 3, 'item' => 'Shadowmagic', 'author' => 'John Lenahan',
-		       'isbn' => '978-1905548927' ),
-		array( 'ID' => 4, 'item' => 'The Crown Conspiracy', 'author' => 'Michael J. Sullivan',
-		       'isbn' => '978-0979621130' ),
-		array( 'ID' => 5, 'item'     => 'Max Quick: The Pocket and the Pendant', 'author'    => 'Mark Jeffrey',
-		       'isbn' => '978-0061988929' ),
-		array('ID' => 6, 'item' => 'Jack Wakes Up: A Novel', 'author' => 'Seth Harwood',
-		      'isbn' => '978-0307454355' )
-	);
+	var $todo_data;
 
 	function __construct(){
 		global $status, $page;
@@ -78,7 +65,7 @@ class ClevernessToDoListTable extends WP_List_Table {
 
 	function get_sortable_columns() {
 		$sortable_columns = array(
-			'ID'        => array( 'id', false ),
+			'ID'        => array( 'ID', false ),
 			'item'      => array( 'item',false) ,
 			'priority'  => array( 'priority', false ),
 			'progress'  => array( 'progress', false )
@@ -138,20 +125,44 @@ class ClevernessToDoListTable extends WP_List_Table {
 		$hidden   = array();
 		$sortable = $this->get_sortable_columns();
 		$this->_column_headers = array( $columns, $hidden, $sortable );
-		usort( $this->example_data, array( &$this, 'usort_reorder' ) );
+		usort( $this->todo_data, array( &$this, 'usort_reorder' ) );
 
 		$per_page = 5;
 		$current_page = $this->get_pagenum();
-		$total_items = count( $this->example_data );
+		$total_items = count( $this->todo_data );
 
-		// only ncessary because we have sample data
-		$this->found_data = array_slice( $this->example_data,( ( $current_page-1 )* $per_page ), $per_page );
+		// only necessary because we have sample data
+		$this->found_data = array_slice( $this->todo_data,( ( $current_page-1 )* $per_page ), $per_page );
 
 		$this->set_pagination_args( array(
 			'total_items' => $total_items,                  //WE have to calculate the total number of items
 			'per_page'    => $per_page                     //WE have to determine how many items to show on a page
 		) );
 		$this->items = $this->found_data;
+	}
+
+	function set_todo_data( $todo_items, $priorities, $url, $completed = 0, $visible = 0 ) {
+		global $ClevernessToDoList;
+
+		while ( $todo_items->have_posts() ) : $todo_items->the_post();
+			$id = get_the_ID();
+			$posts_to_exclude[] = $id;
+
+			if ( $visible == 0 ) {
+				list( $priority, $assign_meta, $deadline_meta, $completed_meta, $progress_meta ) = CTDL_Lib::get_todo_meta( $id );
+
+				$priority_class = CTDL_Lib::set_priority_class( $priority );
+
+				$this->todo_data[] = array(
+					'ID' => $id,
+					'item' =>  get_the_content(),
+					);
+
+
+			}
+		endwhile;
+
+		return $posts_to_exclude;
 	}
 
 }
