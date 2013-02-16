@@ -1,18 +1,23 @@
 <?php
 /*
 Plugin Name: Cleverness To-Do List
-Version: 3.2.3
+Version: 3.2.3-1.0
 Description: Manage to-do list items on a individual or group basis. Includes a dashboard widget, a sidebar widget, and shortcodes.
 Author: C.M. Kendrick
-Author URI: http://cleverness.org
-Plugin URI: http://cleverness.org/plugins/to-do-list/
+Author URI: http://www.4acetech.com
+Plugin URI: https://github.com/4AceTechnologies/cleverness-to-do-list-plugin
+
+Origin Author: C.M. Kendrick
+Origin Author URI: http://cleverness.org
+Original Plugin URI: http://cleverness.org/plugins/to-do-list/
+
 */
 
 /**
  * Cleverness To-Do List Plugin Main File
  *
- * This plugin was based on the to-do plugin by Abstract Dimensions with a patch by WordPress by Example.
- * @author C.M. Kendrick <cindy@cleverness.org>
+ * This plugin was based on the cleverness-t-do-list-plugin plugin by C.M.Kendrick originally.
+ * @author Waqar <waqar@4acetech.com>
  * @package cleverness-to-do-list
  * @version 3.2.3
  */
