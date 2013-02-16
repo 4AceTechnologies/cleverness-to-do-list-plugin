@@ -19,7 +19,7 @@ Original Plugin URI: http://cleverness.org/plugins/to-do-list/
  * This plugin was based on the cleverness-t-do-list-plugin plugin by C.M.Kendrick originally.
  * @author Waqar <waqar@4acetech.com>
  * @package cleverness-to-do-list
- * @version 3.2.3
+ * @version 1.0
  */
 
 add_action( 'init', 'cleverness_todo_loader' );
